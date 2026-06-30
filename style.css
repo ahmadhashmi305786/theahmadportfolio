@@ -806,7 +806,8 @@
     transition: transform 0.8s ease;
   }
   
-  .cert-card:hover .card-inner {
+  .cert-card:hover .card-inner,
+  .cert-card.is-flipped .card-inner {
     transform: rotateY(180deg);
   }
   
@@ -924,15 +925,114 @@
   }
   
   /* =========================
-     RESPONSIVE
+     MOBILE CAROUSEL
   ========================= */
+  .certs-carousel-wrap {
+    position: relative;
+  }
+
+  .certs-carousel-btn,
+  .certs-carousel-dots {
+    display: none;
+  }
+
   @media (max-width: 768px) {
-    .certs-grid {
-      grid-template-columns: 1fr;
+    .certs-content {
+      padding: 2rem 0;
     }
-  
+
+    .certs-carousel-wrap {
+      padding: 0 3rem;
+    }
+
+    .certs-grid {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      gap: 1.25rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 0.5rem 0 1rem;
+    }
+
+    .certs-grid::-webkit-scrollbar {
+      display: none;
+    }
+
     .cert-card {
-      max-width: 100%;
+      flex: 0 0 calc(100% - 0.5rem);
+      max-width: 340px;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+    }
+
+    .certs-carousel-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      background: var(--bg-dark);
+      color: var(--primary);
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .certs-carousel-btn:hover {
+      background: var(--primary);
+      color: var(--bg-dark);
+      border-color: var(--primary);
+    }
+
+    .certs-prev {
+      left: 0.25rem;
+    }
+
+    .certs-next {
+      right: 0.25rem;
+    }
+
+    .certs-carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .certs-dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      border: none;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .certs-dot.active {
+      background: var(--primary);
+      transform: scale(1.2);
+    }
+
+    body.light-theme .certs-carousel-btn {
+      background: var(--about-color);
+      border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    body.light-theme .certs-dot {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    body.light-theme .certs-dot.active {
+      background: var(--primary);
     }
   }
   .back-to-home-btn {

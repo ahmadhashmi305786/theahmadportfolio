@@ -166,3 +166,76 @@ function closeMobileMenu() {
 document.querySelectorAll('.mobile-nav a').forEach(link => {
   link.addEventListener('click', closeMobileMenu);
 });
+
+/* Certificates mobile carousel */
+(function initCertsCarousel() {
+  const carousel = document.querySelector('.certs-grid');
+  const prevBtn = document.querySelector('.certs-prev');
+  const nextBtn = document.querySelector('.certs-next');
+  const dotsContainer = document.querySelector('.certs-carousel-dots');
+
+  if (!carousel || !prevBtn || !nextBtn || !dotsContainer) return;
+
+  const cards = [...carousel.querySelectorAll('.cert-card')];
+  if (!cards.length) return;
+
+  cards.forEach((_, index) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'certs-dot' + (index === 0 ? ' active' : '');
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', `Go to certificate ${index + 1}`);
+    dot.addEventListener('click', () => scrollToIndex(index));
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = [...dotsContainer.querySelectorAll('.certs-dot')];
+
+  function getActiveIndex() {
+    const scrollLeft = carousel.scrollLeft;
+    let closestIndex = 0;
+    let closestDistance = Infinity;
+
+    cards.forEach((card, index) => {
+      const distance = Math.abs(card.offsetLeft - scrollLeft);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    return closestIndex;
+  }
+
+  function updateDots(index) {
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+  }
+
+  function scrollToIndex(index) {
+    const target = cards[index];
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    updateDots(index);
+  }
+
+  prevBtn.addEventListener('click', () => {
+    const nextIndex = Math.max(0, getActiveIndex() - 1);
+    scrollToIndex(nextIndex);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    const nextIndex = Math.min(cards.length - 1, getActiveIndex() + 1);
+    scrollToIndex(nextIndex);
+  });
+
+  carousel.addEventListener('scroll', () => {
+    window.requestAnimationFrame(() => updateDots(getActiveIndex()));
+  }, { passive: true });
+
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    cards.forEach(card => {
+      card.querySelector('.credential-btn')?.addEventListener('click', e => e.stopPropagation());
+      card.addEventListener('click', () => card.classList.toggle('is-flipped'));
+    });
+  }
+})();

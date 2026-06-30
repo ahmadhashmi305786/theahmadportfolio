@@ -529,7 +529,12 @@
   </p>
 
   <div class="certs-content">
-    <div class="certs-grid">
+    <div class="certs-carousel-wrap">
+      <button type="button" class="certs-carousel-btn certs-prev" aria-label="Previous certificate">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+    <div class="certs-grid" aria-label="Certificates carousel">
 
       <!-- Card 1 -->
       <div class="cert-card">
@@ -685,6 +690,13 @@
       </div>
 
     </div> <!-- ✅ CLOSE certs-grid -->
+
+      <button type="button" class="certs-carousel-btn certs-next" aria-label="Next certificate">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+      <div class="certs-carousel-dots" role="tablist" aria-label="Certificate slides"></div>
+    </div> <!-- ✅ CLOSE certs-carousel-wrap -->
   </div>   <!-- ✅ CLOSE certs-content -->
 
 </section> <!-- ✅ PROPER SECTION CLOSE -->
